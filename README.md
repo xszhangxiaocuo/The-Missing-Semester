@@ -19,16 +19,33 @@ The Missing Semester 是一个由 MIT 开发的课程，旨在填补传统教育
 
 计算工具、命令行、版本控制、自动化、现代工作流
 
-## 时间安排
+### 时间安排
 
-**报名：2024-12-30 ~ 2025-01-05**
+**报名：报名时间从 2024 年 12 月 30 日开始，截止 2025 年 01 月 05 日，之后不再接受报名。**
 
-**共学：2025-01-06 ~ 2025-01-26**
+**共学：从 2025 年 01 月 06 日开始，到 2025 年 01 月 26 日，共 21 天。**
 
+### 共学形式
+
+自主学习与线上分享（计划每周六安排一次 Office Hour）
 
 ## 学习资料
 
 [计算机教育中缺失的一课](https://missing-semester-cn.github.io/)。
+
+* 第一周（2025-01-06 ~ 2025-01-12）：
+	* [课程概览与shell](https://missing-semester-cn.github.io/2020/course-shell/)
+	* [Shell工具和脚本](https://missing-semester-cn.github.io/2020/shell-tools/)
+	* [编辑器](https://missing-semester-cn.github.io/2020/editors/)
+	* [数据整理](https://missing-semester-cn.github.io/2020/data-wrangling/)
+* 第二周（2025-01-13 ~ 2025-01-19）：
+	* [命令行环境](https://missing-semester-cn.github.io/2020/command-line/)
+	* [版本控制](https://missing-semester-cn.github.io/2020/version-control/)
+	* [调试及性能分析](https://missing-semester-cn.github.io/2020/debugging-profiling/)
+* 第三周（2025-01-20 ~ 2025-01-26）：
+	* [元编程](https://missing-semester-cn.github.io/2020/metaprogramming/)
+	* [安全和密码学](https://missing-semester-cn.github.io/2020/security/)
+	* [大杂烩](https://missing-semester-cn.github.io/2020/potpourri/)
 
 ## 报名与打卡规则
 
