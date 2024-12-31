@@ -68,7 +68,8 @@ The Missing Semester 是一个由 MIT 开发的课程，旨在填补传统教育
 
 | Name        | 12.06       |
 | :---------- | :---------: |
-| Robot       | ✅          |
+| echozyr2001 |             |
+| YamKH514    |             |
 
 ## 数据统计
 
