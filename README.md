@@ -66,12 +66,13 @@ The Missing Semester 是一个由 MIT 开发的课程，旨在填补传统教育
 
 ✅ = Done ⭕️ = Missed ❌ = Failed
 
-| Name        | 12.06       |
-| :---------- | :---------: |
-| echozyr2001 |             |
-| YamKH514    |             |
-| DriveFLY    |             |
-| ArchSerein  |             |
+| Name          | 12.06       |
+| :------------ | :---------: |
+| echozyr2001   |             |
+| YamKH514      |             |
+| DriveFLY      |             |
+| ArchSerein    |             |
+| DemoJustLuGuo |             |
 
 ## 数据统计
 
