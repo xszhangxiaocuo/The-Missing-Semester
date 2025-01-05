@@ -75,6 +75,7 @@ The Missing Semester 是一个由 MIT 开发的课程，旨在填补传统教育
 | DemoJustLuGuo |             |
 | RisingGalaxy  |             |
 | AmberHeart    |             |
+| Yinko         |             |
 
 ## 数据统计
 
