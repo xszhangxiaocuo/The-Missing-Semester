@@ -22,9 +22,14 @@
 Homework 部分（如果有安排需要填写证明完成）
 Question and Ideas（有什么疑问/或者想法，可以记在这里，也可以分享到群里讨论交流）
 
-### 01.01
+### 01.06
 
-XXX
+今日学习时间：3h
+今日学习任务：reading -> Multiprocessor Benchmarks and Performance Models
+学习内容小结：in this subsection, the main discussion is about evaluating processor performance through benchmarking. But due to such traditional restrictions to benchmark is chiefly limited to the architecture and compiler, better data structuers and algorithms maybe give a misleading result. Then, ucb
+identified 13 design patterns that they will be part of applications of the future. Next, the main discussion of The Roofline Model, how to use it to find performance bottlenecks and how to optimize the processor. How to reduce computational bottlenecks: mix floating-point operation, improve inst-level parallelism and apply SIMD; How to reduce memory bottlenecks: software prefetching and memory affinity.
+Question and Ideas（有什么疑问/或者想法，可以记在这里，也可以分享到群里讨论交流）
+a description of The Roofline Models is at the link [the roofline models wiki](https://en.wikipedia.org/wiki/Roofline_model)
 
 ### 01.20
 
