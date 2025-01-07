@@ -205,3 +205,140 @@ source /Users/echo/.docker/init-zsh.sh || true # Added by Docker Desktop
 `tee` 命令感觉很实用，有时间可以深入了解一下。
 
 ### 01.07
+
+> 学习时间：60 min
+
+---
+
+**大多数 shell 都有自己的一套脚本语言，包括变量、控制流和自己的语法。**
+
+据我所知，特别是 fish 的脚本语言与 bash 有很大不同。我们在写脚本时添加 `#!/bin/sh` 就能消除由于使用的 shell 不同导致脚本无法通用的问题。
+
+---
+
+高级 Bash 脚本编写指南：https://tldp.org/LDP/abs/html/special-chars.html
+
+> `$0` - 脚本名
+> 
+> `$1` 到 $9 - 脚本的参数。 $1 是第一个参数，依此类推。
+> 
+> `$@` - 所有参数
+> 
+> `$#` - 参数个数
+> 
+> `$?` - 前一个命令的返回值
+> 
+> `$$` - 当前脚本的进程识别码
+> 
+> `!!` - 完整的上一条命令，包括参数。常见应用：当你因为权限不足执行命令失败时，可以使用 sudo !! 再尝试一次。
+>
+> `$_` - 上一条命令的最后一个参数。如果你正在使用的是交互式 shell，你可以通过按下 Esc 之后键入 . 来获取这个值。
+
+---
+
+tldr 命令：比 man 更简短的手册查询
+
+---
+
+||：“逻辑或” 操作，只有当左侧命令失败（退出状态码非 0）时，才会执行右侧命令。（两条命令中至少执行一个？）
+
+&&：“逻辑与” 操作，只有当左侧命令成功（退出码为 0）时，才会执行右侧命令。（两台命令都要执行？）
+
+---
+
+<(CMD) 的作用是将命令 CMD 的输出提供给需要文件名作为输入的程序，而不是直接通过管道 | 传递数据。
+
+> 没用过，抽时间熟悉
+
+---
+
+使用 `?` 和 `*` 来匹配一个或任意个字符。`*` 通配符知道，但是使用 `?` 匹配单个字符还是第一次了解。
+
+`{}` 当命令中有公共子串时，可以用来简化命令。例如：
+
+```bash
+convert image.{png,jpg}
+# 会展开为
+convert image.png image.jpg
+
+cp /path/to/project/{foo,bar,baz}.sh /newpath
+# 会展开为
+cp /path/to/project/foo.sh /path/to/project/bar.sh /path/to/project/baz.sh /newpath
+```
+
+---
+
+`env` 命令，用于显示系统中存在的所有环境变量，用在 `shebang` 中可以增加脚本的通用性。
+
+就拿 Python 来说，毕竟不是所有人都会讲它安装在相同的目录中，`#!/usr/bin/env python` 就能解决这个问题。
+
+---
+
+shellcheck 强大的 sh 脚本检查器
+
+```
+#!/bin/bash
+
+# 检查PID文件是否存在
+if [ ! -f zkrock.pid ]; then
+  echo "PID file not found. Is zkrock running?"
+  exit 1
+fi
+
+# 读取PID
+PID=$(cat zkrock.pid)
+
+# 停止进程
+kill $PID
+
+# 等待进程结束
+sleep 1
+
+# 检查进程是否成功停止
+if ps -p $PID > /dev/null; then
+   echo "Failed to stop zkrock. Force stopping..."
+   kill -9 $PID
+fi
+
+# 删除PID文件
+rm zkrock.pid
+
+echo "Zkrock stopped."
+```
+
+检查出来有下面这些可以优化的地方
+
+```
+In stop.sh line 13:
+kill $PID
+     ^--^ SC2086 (info): Double quote to prevent globbing and word splitting.
+
+Did you mean:
+kill "$PID"
+
+
+In stop.sh line 19:
+if ps -p $PID > /dev/null; then
+         ^--^ SC2086 (info): Double quote to prevent globbing and word splitting.
+
+Did you mean:
+if ps -p "$PID" > /dev/null; then
+
+
+In stop.sh line 21:
+   kill -9 $PID
+           ^--^ SC2086 (info): Double quote to prevent globbing and word splitting.
+
+Did you mean:
+   kill -9 "$PID"
+```
+
+---
+
+视频里讲了很多工具，我认为比较重要的是 `fzf` 和 `ripgrep`。有很多实用插件都是基于它们实现的。
+
+---
+
+课后练习暂时不做了
+
+### 01.08
