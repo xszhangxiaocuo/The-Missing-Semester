@@ -342,3 +342,46 @@ Did you mean:
 课后练习暂时不做了
 
 ### 01.08
+
+> 学习时间： min
+
+---
+
+`sed` 是一个流编辑器，可以用来替换文本中的内容，替换的命令为 `s` : `s/REGEX/SUBSTITUTION/`（这在 vim 中也很常用）
+
+其中 `REGEX` 部分是正则表达式，`SUBSTITUTION` 是用于替换匹配结果的文本。
+
+```bash
+ssh myserver journalctl
+ | grep sshd
+ | grep "Disconnected from"
+ | sed 's/.*Disconnected from //'
+```
+
+---
+
+正则表达式在线调试工具：https://regex101.com/
+
+正则表达式这部分让我想到了之前在学编译原理时还想自己实现一个正则解析器，收藏了很多资料但一直没有开始。等空下来可以去实现来玩玩。
+
+正则表达式在某些情况下会非常复杂，它**是**万能的又**不是**万能的，若你要解析 `json` 等结构，有更好的工具可以使用，不用强求去使用正则。
+
+---
+
+平时的数据处理，我几乎只会使用 `cat` `tail` `grep`
+
+`awk` 编程语言介绍：https://backreference.org/2010/02/10/idiomatic-awk/
+
+推荐一个网站 **Learn x in y minutes（y 分钟学习 x）**：https://learnxinyminutes.com/
+
+---
+
+MLK DAY 马丁·路德·金纪念日 它们居然还会放假
+
+---
+
+数据处理这部分讲了很多工具的使用，没有太多可以记录的东西，主要是了解这些工具，日后遇到一些情况就可以使用它们。
+
+工具一定是越用越熟练的，平时也需要有意识地去使用这些数据处理的工具。就算不用课程中讲到的工具，python、lua 等更现代的脚本语言也是一个很好的选择。
+
+### 01.09
