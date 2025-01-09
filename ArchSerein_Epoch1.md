@@ -96,3 +96,19 @@ struct buf {
 > Finally, I used the originally unused area of the inode_disk to implement the file extension support
 
 > However, I felt that the design idea was not perfect and needed a lot of modification.
+
+### 01.09
+
+> 今日学习时长
+
+> 6h
+
+> 今日学习任务
+
+> Added support for all directory-related system calls and filesystems, though there are still issues
+
+> 学习内容小结
+
+> Even if you have a simple idea before implementation, but when you implement it according to your own thinking, because you don't have enough rtfsc, it will lead to some processes are not well implemented or even have conflicts, then you have to re-conceptualize and change your thinking, but the source code of pintos is still relatively complex, then I am stuck in a loop, I hope to finish it soon!
+
+> commit log: (01.09)[https://github.com/crazyofcode/cs162/commit/cc3a71d28370b9c9da209a12575c7765d0349482]
