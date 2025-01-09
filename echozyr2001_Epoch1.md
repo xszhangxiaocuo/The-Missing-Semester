@@ -385,3 +385,68 @@ MLK DAY 马丁·路德·金纪念日 它们居然还会放假
 工具一定是越用越熟练的，平时也需要有意识地去使用这些数据处理的工具。就算不用课程中讲到的工具，python、lua 等更现代的脚本语言也是一个很好的选择。
 
 ### 01.09
+
+> 学习时间：60 min
+
+---
+
+vscode neovim 插件 https://marketplace.visualstudio.com/items?itemName=asvetliakov.vscode-neovim
+
+一些配置
+
+```json
+{
+  "vscode-neovim.neovimExecutablePaths.linux": "/usr/bin/nvim",
+  "vscode-neovim.neovimInitVimPaths.linux": "$HOME/.config/nvim/init.lua",
+  "vscode-neovim.compositeKeys": {
+    "jk": {
+      "command": "vscode-neovim.lua",
+      "args": [
+        "vim.api.nvim_input('<ESC>')\nrequire('vscode-neovim').action('workbench.action.files.save')"
+      ]
+    }
+  },
+}
+```
+
+---
+
+- 行： 0 （行初）， ^ （第一个非空格字符）， $ （行尾）
+- 屏幕： H （屏幕首行）， M （屏幕中间）， L （屏幕底部）
+
+---
+
+**宏**
+
+`q{字符}` 来开始在寄存器 `{字符}` 中录制宏
+
+`q` 停止录制
+
+`@{字符}` 重放宏
+
+---
+
+因为本身比较熟悉 `vim` 的操作，所以这部分直接快速掠过了，仅记录了一些之前没用过以及觉得比较重要的内容。
+
+然后花了一点时间来配置 `neovim`。（`neovim` 是更现代化的 `vim` 可以使用 `lua` 语言来进行配置）简单做些记录。
+
+`neovim` 目前已经有很多成熟的配置 [Lazyvim](https://www.lazyvim.org/)、[NvChad](https://nvchad.com/)
+
+初次尝试 `neovim` 可以选择其一进行体验，它们的官网中都提供了插件配置的教程，想要切换也非常简单，只需要删除或重命名 `~/.config/nvim` 文件夹，然后换上新的配置即可。
+
+```bash
+➜  ~ ls ~/.config | grep "nvim"
+nvim
+nvim.astron-back
+nvim.lazy-back
+nvim.self-back
+nvim.tar.gz
+```
+
+我计划基于 https://github.com/nvim-lua/kickstart.nvim 进行配置，因为 `Lazyvim` 与 `NvChad` 的配置非常庞大与复杂（在 1c1g 的服务器上甚至能把内存干满），有很多我不需要的功能，一些快捷键也不是我习惯的，并且定制其中一些插件会非常复杂，牵一发而动全身。
+
+`kickstart` 是一个非常精简的 neovim 初始配置。但也不是直接将它克隆下来然后做定制。而是从零开始配置，参考它的文件结构以及配置内容。
+
+这样才能做到在最小的化的安装下尽可能满足自己的要求，日后做修改也非常容易，毕竟配置是自己一个字一个字写的。
+
+### 01.10
