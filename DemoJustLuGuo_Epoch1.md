@@ -84,3 +84,77 @@ total 8
   sakuraauro@DemoJustLuGuo:/sys/class/power_supply/BAT1$ cat capacity
 94
 ```
+### 01.10
+
+#### 学习时长：1小时
+
+Bash 中的字符串通过 ' 和 " 分隔符来定义，但是它们的含义并不相同。以 ' 定义的字符串为原义字符串，其中的变量不会被转义，而 " 定义的字符串会将变量值进行替换。
+
+>  foo=bar
+>
+>  echo "$foo"
+> 
+>  打印 bar
+> 
+>  echo '$foo'
+> 
+>  打印 $foo
+
+自己实操的时候没有正确理解这段话
+在执行 `echo "mkdir -p "$1""` 时一直奇怪为什么输出只有 `mkdir -p`
+实际上正确的写法应该是`echo 'mkdir -p "$1"'`(~~~~日常铸币~~~~)
+
+___
+
+这章还讲到了 &&（与操作符） 和 ||（或操作符）  两种运算符，我具体的实操是这样的
+
+```bash
+sakuraauro@DemoJustLuGuo:~/TEST$ true || echo 123
+sakuraauro@DemoJustLuGuo:~/TEST$ echo $?
+0                        ##true返回0，即执行前一个命令成功
+sakuraauro@DemoJustLuGuo:~/TEST$ false || echo 123
+123                      ##false返回1，即执行前一个命令失败，将执行后一个命令
+sakuraauro@DemoJustLuGuo:~/TEST$ true && echo 123
+123                      ##true返回0即执行成功，将执行后一个命令
+sakuraauro@DemoJustLuGuo:~/TEST$ false && echo 123
+sakuraauro@DemoJustLuGuo:~/TEST$ echo $?
+1                        ##false返回1即执行失败，不会执行后一个命令
+```
+
+___
+
+还讲到了三种通配符，个人实操了一遍感觉确实有助于提升效率。这里就先把它列出来
+
+>1.当你想要利用通配符进行匹配时，你可以分别使用 ? 和 * 来匹配一个或任意个字符。例如，对于文件 foo, foo1, foo2, foo10 和 bar, rm foo? 这条命令会删除 foo1 和 foo2 ，而 rm foo* 则会删除除了 bar 之外的所有文件。
+>
+>2.花括号 {} - 当你有一系列的指令，其中包含一段公共子串时，可以用花括号来自动展开这些命令。这在批量移动或转换文件时非常方便。
+
+下面是我的示例
+
+```bash
+sakuraauro@DemoJustLuGuo:~/TEST$ touch test{1..9}.txt ##创建名为test1到test9的txt文件
+sakuraauro@DemoJustLuGuo:~/TEST$ ls
+change.sh    hi.txt     test2.txt  test5.txt  test8.txt
+document.sh  more       test3.txt  test6.txt  test9.txt
+hello.txt    test1.txt  test4.txt  test7.txt
+sakuraauro@DemoJustLuGuo:~/TEST$ rm test?.txt  ##删除所有带test(x).txt的文件（好像只在10以内有效？）
+sakuraauro@DemoJustLuGuo:~/TEST$ ls
+change.sh  document.sh  hello.txt  hi.txt  more
+```
+
+以下是另一个示例
+```bash
+sakuraauro@DemoJustLuGuo:~/TEST$ touch test{1..11}.txt  ##创建名为test1到test11的txt文件
+sakuraauro@DemoJustLuGuo:~/TEST$ ls
+change.sh    hi.txt     test10.txt  test3.txt  test6.txt  test9.txt
+document.sh  more       test11.txt  test4.txt  test7.txt
+hello.txt    test1.txt  test2.txt   test5.txt  test8.txt
+sakuraauro@DemoJustLuGuo:~/TEST$ rm test?.txt  ##删除所有带test(x).txt的文件
+sakuraauro@DemoJustLuGuo:~/TEST$ ls
+change.sh    hello.txt  more        test11.txt
+document.sh  hi.txt     test10.txt  ##这里test10.txt和test11.txt并没有被删除
+sakuraauro@DemoJustLuGuo:~/TEST$ rm test??.txt
+sakuraauro@DemoJustLuGuo:~/TEST$ ls
+change.sh  document.sh  hello.txt  hi.txt  more  ##把?换成??就可以删除掉了
+```
+另外，使用`rm test*.txt`命令应该会更方便，不过看使用场景吧。
