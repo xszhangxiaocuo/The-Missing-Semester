@@ -27,7 +27,7 @@ Duration of study: 1h \
 What did I learn today: Using the Shell
 
 A path on the shell is a delimited list of directories \
-It separated by ` / ` on Linux or X OS and ` \ `on Windows. \
+It separated by ` / ` on Linux or OS X and ` \ `on Windows. \
 We can use ` pwd ` to get currented path, ` ls ` to list files and directories on currented path, ` cd ` to change currented working directory. \
 Entering ` ls -l /home `, the shell will output:
 ```bash
@@ -81,3 +81,34 @@ ren@ren-VMware-Virtual-Platform:/tmp/missing$ ./semester | grep last-modified > 
 ren@ren-VMware-Virtual-Platform:/tmp/missing$ cat ~/last-modified.txt
 last-modified: Sat, 21 Dec 2024 16:53:01 GMT
 ```
+
+### 01.10
+
+Duration of study: 40min \
+What did I learn today: Shell Scripting
+
+Using `foo=bar` to access the value of the variable with `$foo`. Using `foo = bar` will not work, because it will be interpreted as calling the `foo` program with argumenrs `=` and `bar`. \
+Using `'` and `"` to define strings, but they are not equivalent. Strings delimited with `'` will not substitute variable value whereas whereas `"` delimited strings will. \
+`bash` supports control flow techniques including `if`, `case`, `while` and `for`. It also supports for defining function, like:
+```bash
+mcd () {
+    mkdir -p "$1"
+    cd "$1"
+}
+```
+`Bash` uses a veriety of special variables to refer to arguments, error codes, and other relevant variables.
+> `$0` - Name of the script
+>
+> `$1` to `$9` - Arguments to the script. `$1` is the first argument and so on.
+>
+> `$@` - All the arguments
+>
+> `$#` - Number of arguments
+>
+> `$?` - Return code of the previous command
+>
+> `$$` - Process identification number (PID) for the current script
+>
+> `!!` - Entire last command, including arguments. A common pattern is to execute a command only for it to fail due to missing permissions; you can quickly re-execute the command with sudo by doing `sudo !!`
+>
+> `$_` - Last argument from the last command. If you are in an interactive shell, you can also quickly get this value by typing `Esc` followed by `.` or `Alt+.`
