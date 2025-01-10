@@ -79,7 +79,7 @@ Bash 中使用空格分割参数，因此一些为了美观手敲空格的习惯
 
 这句话实在是太真实了。对我个人来说，当我使用某个软件、工具时，若有人问：这个工具能不能实现 XX？我想了想可能会说：肯定能啊。往往经过一番寻找还真能实现。那我凭什么来判断？这时候我的思路就是：因为如果我是设计者，我应当会设计这个功能。
 
-`journalctl`可以用来查看日志，`systemd`的日志也同样可以在这里查看，我之前用的最多的就是拿来查 Nginx 的日志。
+`journalctl`可以用来查看`systemd`的日志，我之前用的最多的就是拿来查 Nginx 的日志。
 
 我们知道在 UNIX 中管道符的概念，可以将数据在命令之间传递。一般来说，Nginx 也会在`/var/log/nginx`下面输出一份日志，但是每一份都很大，打开以后从上翻到下很麻烦，怎么办呢？可以用`cat`配合`grep`来做一些过滤。
 
@@ -119,3 +119,45 @@ cat log.txt | grep -v 'warning'
 ```
 
 内容不多，但胜在还在继续。
+
+### 01.10
+
+在简单搜索出需要的内容后，我们还可以用正则表达式来提取需要的内容并格式化输出。
+
+在写正则的时候遇到了一些困难，当然这也见怪不怪了，谁都知道正则不是人写的。
+
+`sed`默认支持的是 BRE(Basic Regular Expression) 基本正则表达式，和 ERE(Extended Regular Expression) 相比只在一些符号上有区别。如果想用 ERE，记得加上扩展选项`-E`。
+
+> https://www.gnu.org/software/sed/manual/html_node/BRE-vs-ERE.html#BRE-vs-ERE
+>
+> In GNU `sed`, the only difference between basic and extended regular expressions is in the behavior of a few special characters: ‘?’, ‘+’, parentheses, braces (‘{}’), and ‘|’.
+>
+> With basic (BRE) syntax, these characters do not have special meaning unless prefixed with a backslash (‘\’); While with extended (ERE) syntax it is reversed: these characters are special unless they are prefixed with backslash (‘\’).
+
+在一般的编程语言中应该会使用 PCRE(Perl Compatible Regular Expressions)，比 BRE 要扩展得多，是支持这些元字符的。
+
+这里我们想提取所有登录失败日志的用户名、IP 和端口。具体的表达式就不解释了，可以问 GPT。
+
+```bash
+journalctl | grep 'Failed password' | sed -E 's/.*Failed password for (invalid user (.*)|(root)) from (.*) port ([0-9]+) ssh2/Username:\2\3 IP:\4:\5/'
+```
+
+> Jan 10 11:45:57 CubeCloud-2021818444 sshd[430179]: Failed password for root from 92.255.85.107 port 49690 ssh2
+> Jan 10 11:46:01 CubeCloud-2021818444 sshd[430182]: Failed password for invalid user admin from 92.255.85.107 port 60556 ssh2
+> Jan 10 11:46:55 CubeCloud-2021818444 sshd[430192]: Failed password for invalid user monitoring from 2.57.122.193 port 55322 ssh2
+> Jan 10 11:47:34 CubeCloud-2021818444 sshd[430195]: Failed password for invalid user shakeel from 2.57.122.26 port 59606 ssh2
+
+> Username:root IP:92.255.85.107:49690
+> Username:admin IP:92.255.85.107:60556
+> Username:monitoring IP:2.57.122.193:55322
+> Username:shakeel IP:2.57.122.26:59606
+
+看似问题解决了，但别忘了默认用户除了`root`还有其他的，我们要想一个一劳永逸的办法。前面的`invalid user`才是真正的可选部分是不？那好嘛，我们照着这个改。
+
+```bash
+journalctl | grep 'Failed password' | sed -E 's/.*Failed password for ((invalid user )?(.*)) from (.*) port ([0-9]+) ssh2/Username:\3 IP:\4:\5/'
+```
+
+搞定！还避免了上一组正则需要同时引用组 2 和组 3 的麻烦。
+
+这么一玩，会发现通过使用管道配合各种工具，数据整理变得简单多了。在过去我都是将日志文件拉到本地再针对性做处理，先来看来似乎有更好的方式。甚至可以基于此编写`bash`脚本做出属于自己业务场景的小工具，妙哉。
