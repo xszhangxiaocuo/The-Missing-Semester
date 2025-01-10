@@ -111,4 +111,20 @@ struct buf {
 
 > Even if you have a simple idea before implementation, but when you implement it according to your own thinking, because you don't have enough rtfsc, it will lead to some processes are not well implemented or even have conflicts, then you have to re-conceptualize and change your thinking, but the source code of pintos is still relatively complex, then I am stuck in a loop, I hope to finish it soon!
 
-> commit log: (01.09)[https://github.com/crazyofcode/cs162/commit/cc3a71d28370b9c9da209a12575c7765d0349482]
+> commit log: [01.09](https://github.com/crazyofcode/cs162/commit/cc3a71d28370b9c9da209a12575c7765d0349482)
+
+### 01.10
+
+> 今日学习时长
+
+> 5h
+
+> 今日学习任务
+
+> Continuing with yesterday's mission.
+
+> 学习内容小结
+
+> Fixed the logic in the syscall parameter check, updated the logic in mkdir, open, write to create directories properly, and the userprog test points passed except for oom (which is supposed to be caused by files opened by cwd).
+
+> commit log: [01.10](https://github.com/crazyofcode/cs162/commit/592aa7e4e475cc4efd3208a72dd8179b1551705c)
