@@ -456,3 +456,58 @@ nvim.tar.gz
 今天主要是在尝试对 `neovim` 进行配置，花了 20 分钟在 `learnxinyminutes` 上快速过了一遍 `lua` 语言，剩下时间主要在熟悉 `kickstart` 项目。
 
 ### 01.11
+
+> 学习时间：70 min
+
+主要在回顾本周内容，也有一些新的想法记录在下面：
+
+---
+
+`tee` 命令可以用来用做两个命令之间的连接。
+
+> Read from `stdin` and write to `stdout` and files (or commands).
+
+---
+
+`foobar` 文化，在你不知道如何命名时通常使用它们，类似中文环境下的小明、小红。
+
+---
+
+常用文件描述符：
+
+* `0` 表示 `stdin`
+* `1` 表示 `stdout`
+* `2` 表示 `stderr`
+* `/dev/null` 表示空文件
+
+`stdout` 和 `stderr` 默认都是将信息输出到终端上，但是它们还是有区别。
+
+```C
+int main(){
+  fprintf(stdout,"Hello ");
+  fprintf(stderr,"World!");
+  return0;
+}
+```
+
+上面这段代码的输出是 `World!Hello `。
+
+在默认情况下，`stdout` 是行缓冲的，他的输出会放在一个 `buffer` 里面，只有到换行的时候，才会输出到屏幕。而 `stderr` 是无缓冲的，会直接输出。
+
+---
+
+在不知道脚本运行文件的位置时，使用 `#!/usr/bin/env <CMD>`
+
+---
+
+**到底什么是 Shell**
+
+shell 直译过来是 “外壳”，它是一种特殊的用户程序，给用户提供了使用操作系统服务的接口。shell 接受用户输入的人类可读的命令，并将其转换为内核可以理解的内容，当用户启动终端时，shell 就会启动。
+
+shell 有两类：命令行 shell（CLI） 和图形 shell（GUI）。
+
+shell 也是一种编程语言，与我们常见的脚本语言 python、lua 类似，它们都有一个交互式编程环境，这个环境叫做 `REPL`（Read-Eval-Print-Loop）。我们使用 shell 其实就是在使用它的 REPL。
+
+---
+
+继续 `neovim` 的配置
