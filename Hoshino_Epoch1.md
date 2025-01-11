@@ -64,3 +64,94 @@ It is good practice to write `shebang` lines using the [`env`](https://www.man7.
 > - Functions are loaded once when their definition is read. Scripts are loaded every time they are executed. This makes functions slightly faster to load, but whenever you change them you will have to reload their definition.
 > - Functions are executed in the current shell environment whereas scripts execute in their own process. Thus, functions can modify environment variables, e.g. change your current directory, whereas scripts can’t. Scripts will be passed by value environment variables that have been exported using [`export`](https://www.man7.org/linux/man-pages/man1/export.1p.html)
 > - As with any programming language, functions are a powerful construct to achieve modularity, code reuse, and clarity of shell code. Often shell scripts will include their own function definitions.
+
+### 01.12
+
+Study Time: 1h.
+
+#### Note
+
+Today I got familiar with the use of several shell tools and did some exercises.
+
+#### Exercise
+
+1. > `-l`use a long listing format.
+   >
+   > `-h` with `-l` and `-s`, print sizes like 1K 234M 2G etc.
+   >
+   > `--sort=WORD` sort by WORD instead of name: none (-U), size (-S), time(-t), version (-v), extension (-X), width.
+   >
+   > `--time=WORD` select which timestamp used to display or sort; access time (-u): atime, access, use; metadata change time (-c):ctime, status; modified time (default): mtime,modification; birth time: birth, creation;with -l, WORD determines which time to show; with --sort=time, sort by WORD (newest first).
+   >
+   > `--color[=WHEN]`  color the output WHEN; more info below
+
+```shell
+ls -lha --sort=time --time=atime --color=auto
+```
+
+![](https://raw.githubusercontent.com/xszhangxiaocuo/picBed/master/picBed/image-20250111175249287.png)
+
+2.
+
+```shell
+marco() {
+    export MARCO_DIR=$(pwd)  # Save the current working directory in the environment variable MARCO_DIR
+    echo "Saved current directory: $MARCO_DIR"
+}
+
+polo() {
+    if [ -z "$MARCO_DIR" ]; then
+        echo "No directory saved. Please run 'marco' first."
+    else
+        cd "$MARCO_DIR"  # Switch to the saved directory
+        echo "Changed to saved directory: $MARCO_DIR"
+    fi
+}
+```
+
+3.
+
+target_script.sh
+
+```shell
+#!/usr/bin/bash
+
+n=$(( RANDOM % 50 ))
+
+if [[ $n -eq 42 ]]; then
+    echo "Something went wrong"
+    >&2 echo "The error was using magic numbers"
+    exit 1 
+fi
+
+echo "Everything went according to plan"
+exit 0 
+```
+
+main_script
+
+```shell
+#!/usr/bin/bash
+
+output_file="script_output.log"
+error_file="script_error.log"
+
+run_count=0
+
+while true; do
+    ((run_count++))
+
+    # Call target_script, capturing output and errors
+    ./target_script.sh >> "$output_file" 2>> "$error_file"
+
+    if [[ $? -ne 0 ]]; then
+        break
+    fi
+done
+
+# 输出结果
+echo "The script ran $run_count times before failing."
+echo "Standard Output was saved to $output_file"
+echo "Standard Error was saved to $error_file"
+```
+
