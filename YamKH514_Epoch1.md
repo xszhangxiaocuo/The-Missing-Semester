@@ -112,3 +112,40 @@ mcd () {
 > `!!` - Entire last command, including arguments. A common pattern is to execute a command only for it to fail due to missing permissions; you can quickly re-execute the command with sudo by doing `sudo !!`
 >
 > `$_` - Last argument from the last command. If you are in an interactive shell, you can also quickly get this value by typing `Esc` followed by `.` or `Alt+.`
+
+### 01.11
+
+Duration of study: 40min \
+What did I learn today: Shell Scripting and Shell Tools
+
+When we perform comparisons in bash, try to use double brackets `[[]]` in favor of simple brackets `[]`.It will reduce chances of making mistakes although it can't be portable to `sh`.
+
+What is shell globbing（通配）?
+> When launching scripts, you will often want to provide arguments that are similar. Bash has ways of making this easier, expanding expressions by carrying out filename expansion. These techniques are often referred to as shell globbing.
+- Wildcards: Using `?` and `*` to match one or any amount of characters respectively.
+- Curly braces`{}`: Whenever we have a common substring in a series of commands,wo can use `{}` for bash to expand this automatically.
+```bash
+mv *{.py,.sh} folder
+# Will move all *.py and *.sh files
+```
+
+Using `man` command to  learn how to use commands, or using [TLDR pages](https://tldr.sh/) to check example use cases of a command quickly.
+
+Using `find` to find where the file is. Its syntax can sometimes be tricky to remember, so we can use `fd` which is a simple, fast and user-frindly alternative to `find`.
+```bash
+# Find all directories named src
+find . -name src -type d
+# Find all python files that have a folder named test in their path
+find . -path '*/test/*.py' -type f
+# Find all files modified in the last day
+find . -mtime -1
+# Find all zip files with size in range 500k to 10M
+find . -size +500k -size -10M -name '*.tar.gz'
+# Delete all files with .tmp extension
+find . -name '*.tmp' -exec rm {} \;
+# Find all PNG files and convert them to JPG
+find . -name '*.png' -exec convert {} {}.jpg \;
+```
+
+Using `grep`, `ack`, `ag` and `rg` to find code.
+
