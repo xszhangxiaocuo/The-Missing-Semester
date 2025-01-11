@@ -138,6 +138,8 @@ cat log.txt | grep -v 'warning'
 
 这里我们想提取所有登录失败日志的用户名、IP 和端口。具体的表达式就不解释了，可以问 GPT。
 
+如果需要测试正则的话，可以用这个：https://regex101.com/
+
 ```bash
 journalctl | grep 'Failed password' | sed -E 's/.*Failed password for (invalid user (.*)|(root)) from (.*) port ([0-9]+) ssh2/Username:\2\3 IP:\4:\5/'
 ```
@@ -161,3 +163,38 @@ journalctl | grep 'Failed password' | sed -E 's/.*Failed password for ((invalid 
 搞定！还避免了上一组正则需要同时引用组 2 和组 3 的麻烦。
 
 这么一玩，会发现通过使用管道配合各种工具，数据整理变得简单多了。在过去我都是将日志文件拉到本地再针对性做处理，先来看来似乎有更好的方式。甚至可以基于此编写`bash`脚本做出属于自己业务场景的小工具，妙哉。
+
+### 01.11
+
+忙忙碌碌的赶路人，终于到家了。
+
+提取出用户名还不够，我们想看看哪些用户名是被光顾的常客。这里可以用管道和一些命令组合来实现原来只能用 Excel 实现的功能。
+
+```bash
+journalctl
+ | grep 'Failed password'
+ | sed -E 's/.*Failed password for ((invalid user )?(.*)) from (.*) port ([0-9]+) ssh2/\3/'
+ | sort # 将用户名排序 以便使用uniq
+ | uniq -c # 按顺序折叠重复的文本并统计
+ | sort -nk1 # 对第一列（统计值）进行数字排序（默认空格分割）
+```
+
+排序后还可以使用 `head` 或 tail` 提取一部分内容，如：`head -n10` 提取前 10 行。
+
+紧接着使用 `awk` 提取第二列的内容，并使用 `paste` 将他们按逗号分割的形式输出，完整的命令如下：
+
+```bash
+journalctl
+| grep 'Failed password'
+| sed -E 's/.*Failed password for ((invalid user )?(.*)) from (.*) port ([0-9]+) ssh2/\3/'
+| sort
+| uniq -c
+| sort -nrk1
+| head -n10
+| awk '{print $2}'
+| paste -sd,
+```
+
+输出结果是：`root,admin,user,anuj,ubuntu,shaista,test,lenovo,bmp,user1`
+
+这比用 Excel 方便多了！
