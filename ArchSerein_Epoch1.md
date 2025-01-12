@@ -128,3 +128,19 @@ struct buf {
 > Fixed the logic in the syscall parameter check, updated the logic in mkdir, open, write to create directories properly, and the userprog test points passed except for oom (which is supposed to be caused by files opened by cwd).
 
 > commit log: [01.10](https://github.com/crazyofcode/cs162/commit/592aa7e4e475cc4efd3208a72dd8179b1551705c)
+
+### 01.12
+
+> 今日学习时长
+
+> 4.5h
+
+> 今日学习任务
+
+> 缝缝补补, 跟着测试点的错误信息, 修改实现的问题
+
+> 学习内容小节
+
+> 主要是文件/目录的新建和删除相关操作实现的补充, 比如不能删除 pcb->cwd 的父目录和不能删除 "/" 目录等, 现在关于这两个部分的测试点还有 rm-tree 没有通过
+
+> commit log: [01.12](https://github.com/crazyofcode/cs162/commit/4bde035a38e5dcddd2faed3fc4d6a567af5bc508)
