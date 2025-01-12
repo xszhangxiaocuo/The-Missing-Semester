@@ -112,7 +112,7 @@ jobs:
           END_DATE: ${{vars.END_DATE }}
           FILE_SUFFIX: ${{vars.FILE_SUFFIX}}
           FIELD_NAME: ${{vars.FIELD_NAME}}
-        run: python sync_readme.py
+        run: python async_readme.py
       - name: Check for changes
         id: git-check
         run: |
