@@ -150,4 +150,36 @@ find . -name '*.png' -exec convert {} {}.jpg \;
 
 Using `grep`, `ack`, `ag` and `rg` to find code.
 
+### 01.12
+
+Duration of study: 30min \
+What did I learn today: Vim Editors
+
+Vim's modal editing
+Vim has multiple operating modes:
+- Normal: moving around a file and making edits
+- Insert: inserting text
+- Replace: replacing text
+- Visual: selecting blocks of text
+- Command-line: running a command
+
+Pressing `<ESC>` to switch from any mode back to Normal. From Normal mode, you can:
+- enter Insert mode with `i`
+- enter Replace mode with `R`
+- enter Visual mode with `v`
+- enter Visual Line mode with `V`
+- enter Visual Block mode with `^V`
+- enter Command-line mode with `:`
+
+**Command-line** \
+When you enter `:` to change Command-line mode, you can type:
+>- `:q` quit (close window)
+>- `:w` save (“write”)
+>- `:wq` save and quit
+>- `:e` {name of file} open file for editing
+>- `:ls` show open buffers
+>- `:help {topic}` open help
+>   - `:help :w` opens help for the :w command
+>   - `:help w` opens help for the w movement
+
 <!-- Content_END -->
