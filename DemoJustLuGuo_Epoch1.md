@@ -6,7 +6,6 @@
 
 ## 笔记证明
 
-<!-- Content_START --> 
 ### 01.06
 
 #### 学习时长：50 分钟
@@ -103,7 +102,7 @@ Bash 中的字符串通过 ' 和 " 分隔符来定义，但是它们的含义并
 
 自己实操的时候没有正确理解这段话
 在执行 `echo "mkdir -p "$1""` 时一直奇怪为什么输出只有 `mkdir -p`
-实际上正确的写法应该是`echo 'mkdir -p "$1"'`(~~~~日常铸币~~~~)
+实际上正确的写法应该是`echo 'mkdir -p "$1"'`(~~日常铸币~~)
 
 ___
 
@@ -160,4 +159,129 @@ change.sh  document.sh  hello.txt  hi.txt  more  ##把?换成??就可以删除�
 ```
 另外，使用`rm test*.txt`命令应该会更方便，不过看使用场景吧。
 
-<!-- Content_END -->
+### 01.12
+
+#### 学习时长：1小时
+
+先补上上一节的作业
+```bash
+
+#!/bin/bash
+
+ export new_workspace=""
+
+ marco(){
+         new_workspace=$(pwd)
+ }
+
+ polo(){
+         cd "$new_workspace"
+ }
+ 
+ 下面是终端输出
+ 
+ sakuraauro@DemoJustLuGuo:~/afterwork$ marco marco.sh
+sakuraauro@DemoJustLuGuo:~/afterwork$ cd
+sakuraauro@DemoJustLuGuo:~$ polo
+sakuraauro@DemoJustLuGuo:~/afterwork$
+```
+
+```bash
+#!/usr/bin/env bash  
+
+ standard_out="standard_out.txt"
+ standard_error="standard_error.txt"
+ success_count=0
+ while true;do
+          n=$(( RANDOM % 100 ))
+
+ if [[ n -eq 42 ]]; then
+    echo "Something went wrong" >> "$standard_out"
+    >&2 echo "The error was using magic numbers" >> "$standard_error"
+    exit 1
+ fi
+
+ echo "Everything went according to plan" >> "$standard_out"
+ if [ $? -ne 0 ]; then  
+        echo "脚本在失败前共运行了 $success_count 次"
+        break
+   fi
+    ((success_count++))
+done
+
+cat "$standard_out"
+cat "$standard_error"
+```
+
+学习了vim编辑器的使用
+
+vim键盘图如图
+![alt text](image.png)
+
+基本上 vim 共分为这几种模式：
+1.正常模式：在文件中四处移动光标进行修改
+2.插入模式：插入文本
+3.替换模式：替换文本
+4.可视化模式（一般，行，块）：选中文本块
+5.命令模式：用于执行命令
+
+下面是一些从讲义上摘抄下来的内容，上手这个还是需要点时间的，抄下来方便自己查看
+
+>你可以按下 <ESC>（退出键）从任何其他模式返回正常模式。在正常模式，键入 i 进入插入 模式，R 进入替换模式，v 进入可视（一般）模式，V 进入可视（行）模式，<C-v> （Ctrl-V, 有时也写作 ^V）进入可视（块）模式，: 进入命令模式。
+
+___
+
+>在正常模式下键入 : 进入命令行模式。 在键入 : 后，你的光标会立即跳到屏幕下方的命令行。 这个模式有很多功能，包括打开，保存，关闭文件，以及 退出 Vim。
+>:q 退出（关闭窗口）
+>:w 保存（写）
+>:wq 保存然后退出
+>:e {文件名} 打开要编辑的文件
+>:ls 显示打开的缓存
+>:help {标题} 打开帮助文档
+>:help :w 打开 :w 命令的帮助文档
+>:help w 打开 w 移动的帮助文档
+
+___
+
+>基本移动: hjkl （左， 下， 上， 右）     **卧槽这个左下上右太抽象了，哪怕左上下右也行啊**
+>词： w （下一个词）， b （词初）， e （词尾）
+>行： 0 （行初）， ^ （第一个非空格字符）， $ （行尾）
+>屏幕： H （屏幕首行）， M （屏幕中间）， L （屏幕底部）
+>翻页： Ctrl-u （上翻）， Ctrl-d （下翻）
+>文件： gg （文件头）， G （文件尾）
+>行数： :{行数}<CR> 或者 {行数}G ({行数}为行数)
+>杂项： % （找到配对，比如括号或者 /* */ 之类的注释对）
+>查找： f{字符}， t{字符}， F{字符}， T{字符}
+>查找/到 向前/向后 在本行的{字符}
+>, / ; 用于导航匹配
+>搜索: /{正则表达式}, n / N 用于导航匹配
+
+___
+
+>可视化模式:
+可视化：v
+可视化行： V
+可视化块：Ctrl+v
+可以用移动命令来选中。
+
+___
+
+>i 进入插入模式
+但是对于操纵/编辑文本，不单想用退格键完成
+O / o 在之上/之下插入行
+d{移动命令} 删除 {移动命令}
+例如，dw 删除词, d$ 删除到行尾, d0 删除到行头。
+c{移动命令} 改变 {移动命令}
+例如，cw 改变词
+比如 d{移动命令} 再 i
+x 删除字符（等同于 dl）
+s 替换字符（等同于 xi）
+可视化模式 + 操作
+选中文字, d 删除 或者 c 改变
+u 撤销, <C-r> 重做
+y 复制 / “yank” （其他一些命令比如 d 也会复制）
+p 粘贴
+更多值得学习的: 比如 ~ 改变字符的大小写
+
+___
+
