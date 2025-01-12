@@ -233,8 +233,8 @@ def main():
         with open(README_FILE, 'r', encoding='utf-8') as file:
             content = file.read()
         new_content = update_readme(content)
-        # with open(README_FILE, 'w', encoding='utf-8') as file:
-        #     file.write(new_content)
+        with open(README_FILE, 'w', encoding='utf-8') as file:
+            file.write(new_content)
         logging.info(new_content)
         logging.info("README.md has been successfully updated.")
     except Exception as e:
