@@ -6,6 +6,7 @@
 
 ## 笔记证明
 
+<!-- Content_START --> 
 ### 01.06
 
 #### 学习时长：50 分钟
@@ -158,3 +159,5 @@ sakuraauro@DemoJustLuGuo:~/TEST$ ls
 change.sh  document.sh  hello.txt  hi.txt  more  ##把?换成??就可以删除掉了
 ```
 另外，使用`rm test*.txt`命令应该会更方便，不过看使用场景吧。
+
+<!-- Content_END -->

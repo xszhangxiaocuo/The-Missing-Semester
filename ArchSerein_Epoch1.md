@@ -22,6 +22,7 @@
 Homework 部分（如果有安排需要填写证明完成）
 Question and Ideas（有什么疑问/或者想法，可以记在这里，也可以分享到群里讨论交流）
 
+<!-- Content_START --> 
 ### 01.06
 
 > 今日学习时间：
@@ -128,3 +129,5 @@ struct buf {
 > Fixed the logic in the syscall parameter check, updated the logic in mkdir, open, write to create directories properly, and the userprog test points passed except for oom (which is supposed to be caused by files opened by cwd).
 
 > commit log: [01.10](https://github.com/crazyofcode/cs162/commit/592aa7e4e475cc4efd3208a72dd8179b1551705c)
+
+<!-- Content_END -->

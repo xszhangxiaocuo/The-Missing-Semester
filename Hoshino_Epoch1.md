@@ -6,6 +6,7 @@
 
 ## 笔记证明
 
+<!-- Content_START --> 
 ### 01.06
 
 Study Time: 3h (Allright, I spend most of my time on reading English text, it's so hard for me.)
@@ -65,7 +66,7 @@ It is good practice to write `shebang` lines using the [`env`](https://www.man7.
 > - Functions are executed in the current shell environment whereas scripts execute in their own process. Thus, functions can modify environment variables, e.g. change your current directory, whereas scripts can’t. Scripts will be passed by value environment variables that have been exported using [`export`](https://www.man7.org/linux/man-pages/man1/export.1p.html)
 > - As with any programming language, functions are a powerful construct to achieve modularity, code reuse, and clarity of shell code. Often shell scripts will include their own function definitions.
 
-### 01.12
+### 01.11
 
 Study Time: 1h.
 
@@ -155,3 +156,4 @@ echo "Standard Output was saved to $output_file"
 echo "Standard Error was saved to $error_file"
 ```
 
+<!-- Content_END -->

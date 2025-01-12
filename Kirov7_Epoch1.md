@@ -8,6 +8,7 @@
 
 ## 笔记证明
 
+<!-- Content_START --> 
 ### 1.11
 #### LangChain 框架
 
@@ -148,3 +149,4 @@ Model 是 LangChain 的核心组件，但是 LangChain 本身不提供自己的 
     1. 性能相比其他模式相对较差，需要额外的 Embedding + 向量数据库支持。
     2. 记忆效果受检索功能的影响，好的非常好，差的非常差。
 
+<!-- Content_END -->
