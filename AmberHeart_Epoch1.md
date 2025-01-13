@@ -427,4 +427,67 @@ SHHis@AmberHeart:/tmp# echo '今天就学习到这，下次再见捏'
 今天就学习到这，下次再见捏。
 ```
 
+### 01.13
+#### 今日学习时长:45分钟
+#### 学习总结：相关变量参数、格式以及试了试vim
+
+Bash字符串中''不被转义，“”会被转义字符所替换 例如$<br><br>
+
+执行过程中的空格有其致命性,使用时需注意<br><br>
+
+```bash
+foo=bar
+#可以正常执行
+foo = bar
+#直接报错
+```
+接下来是一些可以用于脚本执行中的参数<br><br>
+```bash
+$0脚本名 $1-$9对应的第几个参数
+
+$#参数数量 $@所有参数 $?参数正确性返回值
+
+!!上一个参数 类似于方向键↑大概 可以用sudo !!来获得权限执行上一个命令
+
+$_ 可以用于提取脚本中最后一个参数 $$脚本的执行进程识别码
+```
+
+此外命令可以配合||和&&使用 相当于or和and<br><br>
+
+true返回码固定为0 false为1<br><br>
+
+感觉在实操过程中熟悉一下就ok了<br><br>
+
+```bash
+SHHis@AmberHeart:~# false || echo "BangDream!"
+BangDream!
+SHHis@AmberHeart:~# true && echo '!! means BangDream!'
+!! means BangDream!
+```
+此外尝试试着用vim看看够不够熟练
+```bash
+SHHis@AmberHeart:~# vim BangDream.sh
+BangDream(){
+        mkdir -p "$1"
+        cd "$1"
+        false || echo "$1" >> BangDream.txt
+        true && echo "$1 is a part of BangDream" >> BangDream.txt
+}
+SHHis@AmberHeart:~# BangDream mikoto
+BangDream: command not found
+SHHis@AmberHeart:~# source BangDream.sh
+SHHis@AmberHeart:~# BangDream mikoto
+SHHis@AmberHeart:~/mikoto# cat BangDream.txt
+mikoto
+mikoto is a part of BangDream
+```
+稍微研究了一下,看起来是成功了<br><br>
+
+今天事情有点多比较赶,就学到这吧
+```bash
+SHHis@AmberHeart:~/mikoto# echo "$(true&&cat BangDream.txt | grep -i mikoto | cut -d' ' -f1)向各位说下次见"
+mikoto
+mikoto向各位说下次见
+```
+
 <!-- Content_END -->
