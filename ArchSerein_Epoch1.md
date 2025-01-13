@@ -146,4 +146,20 @@ struct buf {
 
 > commit log: [01.12](https://github.com/crazyofcode/cs162/commit/4bde035a38e5dcddd2faed3fc4d6a567af5bc508)
 
+### 01.13
+
+> 今日学习时长
+
+> 6h
+
+> 今日学习任务
+
+> 修复关于文件系统中 dir 相关实现的 bug
+
+> 学习内容小结
+
+> readdir 系统调用的实现错误, pos 指针没有被正确的记录, 修改了在第一个 proj 中对于打开文件的 entry 的定义, 增加了对目录的支持, 相应的系统调用函数如: open 等也作了相应的修改, 修改了 dir lookup 函数的 bug, 修复了 inode 被打开但是没有被正确的关闭的问题，最后是文件扩容的问题(只是实现了部分, 即是说扩容量必须小于 BLOCK_SECTOR_SIZE), 但是 dir-vine 测试点还没有通过。
+
+> commit log: [01.13](https://github.com/crazyofcode/cs162/commit/72421901cba7848d660457f330f7f4c405ee1969)
+
 <!-- Content_END -->
