@@ -612,4 +612,88 @@ done
 
 ### 01.13
 
+> 学习时间： 60 min
+
+---
+
+```
+feat	    新特性，新功能
+fix	      修bug
+docs	    更新文档
+style	    修改代码风格、代码格式（不影响代码运行的变动）
+refactor	重构代码（既不是新增功能，也不是修改bug，可以理解为觉得原本写太烂了，重新写了一遍）
+perf	    优化性能、优化体验
+test	    测试
+chore	    构建过程或者辅助工具的变动
+revert	  回滚版本
+merge	    代码合并
+sync	    同步主线或分支
+```
+
+比较好用的一个查看提交记录的命令 `git log --graph --all --decorate --oneline`
+
+---
+
+简单来讲，git 存储的是 `object` 的有向无环图（DAG），
+
+**基本结构**
+
+```text
+type blob = array<byte>
+
+type tree = map<string, tree | blob>
+
+type commit = struct {
+    parents: array<commit>
+    author: string
+    message: string
+    snapshot: tree
+}
+
+type object = blob | tree | commit
+```
+
+**寻址结构**
+
+```text
+objects = map<string, object>
+
+def store(object):
+    id = sha1(object)
+    objects[id] = object
+
+def load(id):
+    return objects[id]
+```
+
+**引用**
+
+```text
+references = map<string, string>
+
+def update_reference(name, id):
+    references[name] = id
+
+def read_reference(name):
+    return references[name]
+
+def load_reference(name_or_id):
+    if name_or_id in references:
+        return load(references[name_or_id])
+    else:
+        return load(name_or_id)
+```
+
+> 当您输入某个指令时，请思考一下这条命令是如何对底层的图数据结构进行操作的。
+
+---
+
+如何编写良好的 git commit message：https://cbea.ms/git-commit/
+
+---
+
+一个使用 Rust 实现的轻量 git 项目：https://github.com/MrBeanCpp/MIT
+
+---
+
 <!-- Content_END -->
