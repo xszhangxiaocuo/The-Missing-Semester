@@ -8,7 +8,8 @@
 
 ## Note
 
-<!-- Content_START --> 
+<!-- Content_START -->
+
 ### 01.06
 
 Learning time: _next day_ `00:00 - 01:00` | `1 hour`
@@ -285,7 +286,7 @@ cut 的 -f 选项支持多种字段范围语法：
 | `-fN-M` | 提取第 N 到第 M 个字段          | `a b c d` | `b c`   |
 | `-f-M`  | 提取从第 1 个字段到第 M 个字段  | `a b c d` | `a b c` |
 
-### 01.08
+### 01.12
 
 > Learning Time: About `3` hours
 
