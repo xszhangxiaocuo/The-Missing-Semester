@@ -162,4 +162,20 @@ struct buf {
 
 > commit log: [01.13](https://github.com/crazyofcode/cs162/commit/72421901cba7848d660457f330f7f4c405ee1969)
 
+### 01.14
+
+> 今日学习时长
+
+> 5h
+
+> 今日学习任务
+
+> 完善文件的扩展, 使用 120 个直接索引和 6 个间接索引, 能够支持更大的文件
+
+> 学习内容小结
+
+> 将 pintos 提供的 free-map 的功能函数进行封装，以满足我设计的双重索引的需要，主要修改了释放和分配 sector 块的逻辑，不过由于需要判断是所以直接索引还是简介索引以及间接索引的内容在哪一块磁盘空间导致逻辑变得更为复杂，写得有些乱，然后发现我的持久性测试都没有通过但是我在 shundown 和 idle-thread 里都有 bflush 的使用，还没找到问题
+
+> commit log: [01.14](https://github.com/crazyofcode/cs162/commit/ac3e1f81c82ffa5c5b886b5b2262cc0fd0767d63)
+
 <!-- Content_END -->
