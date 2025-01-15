@@ -490,4 +490,188 @@ mikoto
 mikoto向各位说下次见
 ```
 
+### 01.15
+#### 今日学习时长：120min
+#### 总结：学的不多 基本在实操
+```bash
+SHHis@AmberHeart:~# touch SHHis{1,5}.txt
+SHHis@AmberHeart:~# echo $(ls)
+283 283pro BangDream.sh CoMETIK.txt SHHis.txt SHHis1.txt SHHis5.txt man mcd.sh mikoto robot.txt snap test
+```
+这里的话似乎是因为没有装zsh导致结果输出并不是SHHis1-SHHis5的感觉<br><br>
+
+后面尝试了另一种方式发现可行
+
+```bash
+SHHis@AmberHeart:~# touch shinycolors{1..9}.txt
+SHHis@AmberHeart:~# echo $(ls)
+283 283pro BangDream.sh CoMETIK.txt SHHis.txt man mcd.sh mikoto robot.txt script.py shinycolors1.txt shinycolors2.txt shinycolors3.txt shinycolors4.txt shinycolors5.txt shinycolors6.txt shinycolors7.txt shinycolors8.txt shinycolors9.txt snap test
+SHHis@AmberHeart:~# rm shinycolors*
+SHHis@AmberHeart:~# ls
+283  283pro  BangDream.sh  CoMETIK.txt  SHHis.txt  man  mcd.sh  mikoto  robot.txt  script.py  snap  test
+```
+
+用于批量操作下的命令优化<br><br>
+
+由于是wsl,不方便在外部环境中寻找python,有关python脚本的这段仅作记录<br><br>
+
+脚本开头第一行的shebang用于解释脚本选择的命令解释器,<br>
+shebang行课使用env命令来利用环境变量中的程序解析脚本,利用的是PATH环境变量定位<br>
+例如：
+>#!/usr/bin/env python
+<br>
+
+这个叫fzf的用于文件检索挺好用的<br><br>
+
+还有这个tree的可视化很清晰<br><br>
+
+以下是本节的作业:<br><br>
+
+```bash
+#不知道排序哪里出了问题不能自动排序，于是加了一个sort手动排序，此外丢失了颜色
+SHHis@AmberHeart:~# ls -a -h -l -u --color=auto | sort -k 6,8
+total 84K
+-rw-r--r--  1 root root  161 Jan 15 13:36 .profile
+-rw-r--r--  1 root root 3.1K Jan 15 13:36 .bashrc
+drwxr-xr-x 19 root root 4.0K Jan 15 13:39 ..
+drwx------  2 root root 4.0K Jan 15 13:47 .cache
+drwx------  3 root root 4.0K Jan 15 13:47 .config
+drwx------  4 root root 4.0K Jan 15 13:47 snap
+drwxr-xr-x  2 root root 4.0K Jan 15 13:47 283
+drwxr-xr-x  2 root root 4.0K Jan 15 13:47 283pro
+drwxr-xr-x  2 root root 4.0K Jan 15 13:47 mikoto
+drwxr-xr-x  2 root root 4.0K Jan 15 13:47 test
+drwx------  9 root root 4.0K Jan 15 13:58 .
+-rw-------  1 root root 7.1K Jan 15 14:29 .viminfo
+-rw-r--r--  1 root root    0 Jan 15 14:29 .motd_shown
+-rw-r--r--  1 root root    0 Jan 15 14:29 man
+-rw-r--r--  1 root root    1 Jan 15 14:29 script.py
+-rw-r--r--  1 root root    8 Jan 15 14:29 CoMETIK.txt
+-rw-r--r--  1 root root   16 Jan 15 14:29 SHHis.txt
+-rw-r--r--  1 root root   33 Jan 15 14:29 mcd.sh
+-rw-r--r--  1 root root  142 Jan 15 14:29 BangDream.sh
+-rw-r--r--  1 root root  150 Jan 15 14:29 robot.txt
+-rw-------  1 root root 5.2K Jan 15 14:36 .bash_history
+
+#变量叫wrun是因为电音教父的where are you now
+SHHis@AmberHeart:~# vim marco.sh
+marco(){
+        export wrun=$(pwd) || exit
+        echo "save as = $wrun"
+}
+polo(){
+        cd $(wrun) || exit
+        echo "tp success"
+}
+SHHis@AmberHeart:~# source marco.sh
+SHHis@AmberHeart:~# cd ..
+SHHis@AmberHeart:/# marco
+save as = /
+SHHis@AmberHeart:/# cd -
+/root
+SHHis@AmberHeart:~# polo
+tp success
+SHHis@AmberHeart:/#
+
+#反复试了挺久 感觉还有点问题
+SHHis@AmberHeart:~# vim mytest.sh
+#!/usr/bin/env bash
+
+n = $(( RANDOM % 100 ))
+
+if [[ n -eq 42 ]]; then
+        echo "Something went wrong"
+        >&2 echo "The error was using magic numbers"
+        exit 1
+fi
+
+
+echo "Everything went according to plan"
+
+SHHis@AmberHeart:~# vim finaltest.sh
+
+#!/usr/bin/env bash
+
+jishu=0
+shuchubz="shuchubz.txt"
+shuchucw="shuchucw.txt"
+>$shuchubz
+>$shuchucw
+
+while true;do
+        ((jishu = jishu + 1))
+        chmod +x mytest.sh
+        ./mytest.sh >> $shuchubz 2>>$shuchucw
+        if [ $? -ne 0 ]; then
+                echo "error at $jishu"
+                break
+        fi
+done
+cat $shuchubz
+cat $shuchucw
+
+SHHis@AmberHeart:~# source finaltest.sh
+error at 90
+Everything went according to plan
+...
+...
+Everything went according to plan
+Something went wrong
+The error was using magic numbers
+#大概是path中没zip命令相关的原因，总之失败了
+SHHis@AmberHeart:~# find . -type f -name "*.txt" | xargs zip yasuo.zip
+xargs: zip: No such file or directory
+
+SHHis@AmberHeart:~# vim pailie.sh
+pailie(){
+        n=$(ls -a -h -l -u | sort -k 6,8) || exit
+        echo "$n"
+}
+
+SHHis@AmberHeart:~# source pailie.sh
+SHHis@AmberHeart:~# pailie
+total 124K
+-rw-r--r--  1 root root  161 Jan 15 13:36 .profile
+-rw-r--r--  1 root root 3.1K Jan 15 13:36 .bashrc
+drwxr-xr-x 19 root root 4.0K Jan 15 13:39 ..
+drwx------  2 root root 4.0K Jan 15 13:47 .cache
+drwx------  3 root root 4.0K Jan 15 13:47 .config
+drwx------  4 root root 4.0K Jan 15 13:47 snap
+drwxr-xr-x  2 root root 4.0K Jan 15 13:47 283
+drwxr-xr-x  2 root root 4.0K Jan 15 13:47 283pro
+drwxr-xr-x  2 root root 4.0K Jan 15 13:47 mikoto
+drwxr-xr-x  2 root root 4.0K Jan 15 13:47 test
+-rw-r--r--  1 root root    0 Jan 15 14:29 .motd_shown
+-rw-r--r--  1 root root    0 Jan 15 14:29 man
+-rw-r--r--  1 root root    1 Jan 15 14:29 script.py
+-rw-r--r--  1 root root    8 Jan 15 14:29 CoMETIK.txt
+-rw-r--r--  1 root root   16 Jan 15 14:29 SHHis.txt
+-rw-r--r--  1 root root   33 Jan 15 14:29 mcd.sh
+-rw-r--r--  1 root root  142 Jan 15 14:29 BangDream.sh
+-rw-r--r--  1 root root  150 Jan 15 14:29 robot.txt
+-rw-r--r--  1 root root   96 Jan 15 15:13 marco
+-rw-r--r--  1 root root  110 Jan 15 15:17 marco.sh
+-rw-------  1 root root 5.2K Jan 15 15:40 .bash_history
+-rw-r--r--  1 root root   34 Jan 15 15:40 shuchucw.log
+-rw-r--r--  1 root root 2.5K Jan 15 15:40 shuchubz.log
+-rw-r--r--  1 root root   34 Jan 15 15:41 shuchucw.txt
+-rw-r--r--  1 root root 3.0K Jan 15 15:41 shuchubz.txt
+-rwxr-xr-x  1 root root  199 Jan 15 15:41 mytest.sh
+-rw-r--r--  1 root root  289 Jan 15 15:42 finaltest.sh
+-rw-------  1 root root 8.8K Jan 15 15:56 .viminfo
+-rw-r--r--  1 root root   69 Jan 15 15:56 pailie.sh
+drwx------  9 root root 4.0K Jan 15 15:56 .
+```
+差不多就学到这了 主要是vim吧大概<br><br>
+
+```bash
+SHHis@AmberHeart:~# vim baibai.sh
+baibai(){
+        n=$1
+        echo "今天就学到这里，$n向各位告辞，各位下次再见捏~"
+}
+SHHis@AmberHeart:~# source baibai.sh
+SHHis@AmberHeart:~# baibai 七草日花
+今天就学到这里，七草日花向各位告辞，各位下次再见捏~
+```
 <!-- Content_END -->
