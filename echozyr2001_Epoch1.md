@@ -764,4 +764,214 @@ https://pyloong.github.io/cookiecutter-pythonic-project/#git-per-commit
 
 ---
 
+### 01.13
+
+> 学习时间：40 min
+
+密码散列函数：https://en.wikipedia.org/wiki/Cryptographic_hash_function，可以将任意大小的数据映射为一个固定大小的输出。我之前一直想实现类似的效果，原来已经有现成的实现了。
+
+**sha-1 sha-2 sha-3**
+
+SHA（安全哈希算法）目前主要有三个版本：
+
+1. **`sha-1`**
+生成固定长度的 160 位哈希值。由于算法设计的局限性，在 2005 年后发现了严重的安全缺陷。
+
+2. **`sha-2`**
+在 `sha-1` 的基础上增加了安全性和抵御攻击的能力，包含 `sha-224`、`sha-256`、`sha-384` 和 `sha-512` 多个算法变体，提供不同的输出长度。目前被广泛使用。
+
+3. **`sha-3`**
+设计上完全独立于 `sha-1` 和 `sha-2`，不受已知或潜在弱点影响。由于在当前技术条件下，`sha-3` 并没有显示出明显的效率优势，且 `sha-2` 目前仍足够安全，所以普及速度较慢。但它被广泛接受为替代 `sha-2` 的下一代哈希算法。
+
+---
+
+**为 commit 添加签名**
+
+![commit](./images/echozyr2001/commit.png)
+
+以下内容记录在我的旧笔记中，仅做分享，目前不一定适用。
+
+1. 使用 brew 安装 gpg
+   
+```shell
+brew install gpg
+```
+
+2. 生成 GPG 密钥对
+
+```shell
+gpg --full-generate-key
+```
+
+3. 在提示时，指定要生成的密钥类型，或按 `Enter` 键接受默认值。
+
+4. 在提示时，指定要生成的密钥大小，或按 `Enter` 键接受默认值。
+
+5. 输入密钥的有效时长。 按 `Enter` 键将指定默认选择，表示该密钥不会过期。 除非你需要过期日期，否则建议接受此默认值。
+
+6. 验证您的选择是否正确。
+
+7. 输入您的用户 ID 信息。
+
+> 确保输入的是电子邮件地址 经过验证的GitHub 帐户。
+
+8. 输入安全密码。
+
+9. 列出你拥有其公钥和私钥的长形式 GPG 密钥。 签名提交或标记需要私钥。
+
+```shell
+gpg --list-secret-keys --keyid-format=long
+```
+
+10. 从 GPG 密钥列表中复制您想要使用的 GPG 密钥 ID 的长形式。 在本例中，GPG 密钥 ID 为 `3AA5C34371567BD2`
+
+```shell
+$ gpg --list-secret-keys --keyid-format=long
+/Users/hubot/.gnupg/secring.gpg
+------------------------------------
+sec   4096R/3AA5C34371567BD2 2016-03-10 [expires: 2017-03-10]
+uid                          Hubot <hubot@example.com>
+ssb   4096R/4BB6D45482678BE3 2016-03-10
+```
+
+11. 粘贴下面的文本（替换为您要使用的 GPG 密钥 ID）。 在本例中，GPG 密钥 ID 为 `3AA5C34371567BD2`：
+
+```shell
+gpg --armor --export 3AA5C34371567BD2
+# Prints the GPG key ID, in ASCII armor format
+```
+
+12. 复制以 `-----BEGIN PGP PUBLIC KEY BLOCK-----` 开头并以 `-----END PGP PUBLIC KEY BLOCK-----` 结尾的 GPG 密钥。
+
+**将 GPG 密钥添加到 GitHub 帐户**
+
+1. 进入设置
+
+2. 进入“SSH 和 GPG 密钥”。
+
+3. 单击“新建 GPG 密钥”
+
+4. 在“标题”字段中键入 GPG 密钥的名称
+
+5. 在“密钥”字段中，粘贴复制的 GPG 密钥
+
+6. 单击“添加 GPG 密钥”
+
+**将您的签名密钥告知 Git**
+
+1. 如果之前已将 Git 配置为在使用 `--gpg-sign` 签名时使用不同的密钥格式，请取消设置此配置，以便使用默认 `openpgp` 格式。
+
+```shell
+git config --global --unset gpg.format
+```
+
+2. 列出你拥有其公钥和私钥的长形式 GPG 密钥。 签名提交或标记需要私钥。
+
+```shell
+gpg --list-secret-keys --keyid-format=long
+```
+
+3. 从 GPG 密钥列表中复制您想要使用的 GPG 密钥 ID 的长形式。 在本例中，GPG 密钥 ID 为 `3AA5C34371567BD2`：
+
+```shell
+$ gpg --list-secret-keys --keyid-format=long
+/Users/hubot/.gnupg/secring.gpg
+------------------------------------
+sec   4096R/3AA5C34371567BD2 2016-03-10 [expires: 2017-03-10]
+uid                          Hubot <hubot@example.com>
+ssb   4096R/4BB6D45482678BE3 2016-03-10
+```
+
+4. 若要在 Git 中设置 GPG 签名主键，请粘贴下面的文本，替换要使用的 GPG 主键 ID。 在本例中，GPG 密钥 ID 为 `3AA5C34371567BD2`：
+
+```shell
+git config --global user.signingkey 3AA5C34371567BD2
+```
+
+5. 将 Git 配置为默认对所有提交进行签名（可选）
+
+```shell
+git config --global commit.gpgsign true
+```
+
+**对提交签名**
+
+1. 当本地分支中的提交更改时，请将 S 标志添加到 git commit 命令：
+
+```shell
+$ git commit -S -m "YOUR_COMMIT_MESSAGE"
+# Creates a signed commit
+```
+
+2. 可能会遇到如下问题
+
+```shell
+gpg: signing failed: Inappropriate ioctl for device
+```
+
+解决方法如下（任选其一）：
+
+一、使用 GPG 的 TTY 模式
+* 设置 GPG 使用终端 (TTY) 来提示输入 PIN。您可以通过在 `~/.gnupg/gpg.conf` 文件中添加以下行来实现这一点：
+
+```shell
+use-agent
+pinentry-mode loopback
+```
+
+   * 然后，在 `~/.gnupg/gpg-agent.conf` 文件中添加以下行：
+
+```shell
+allow-loopback-pinentry
+```
+
+   * 之后，重启 gpg-agent：
+
+```shell
+gpg-connect-agent reloadagent /bye
+```
+
+二、使用`GPG_TTY`环境变量（未验证）
+
+* 在shell 配置文件中（如 `~/.bashrc` 或 `~/.zshrc`），添加以下行：
+
+```shell
+export GPG_TTY=$(tty)
+```
+
+* 然后，重新加载 shell 配置：
+
+```shell
+source ~/.bashrc 或 source ~/.zshrc
+```
+
+三、使用不需要PIN的GPG密钥（未验证）
+
+* 如果 GPG 密钥不需要 PIN，可以尝试生成一个不需要 PIN 的新密钥，并在 Git 中使用这个密钥进行签名。
+
+3. 在本地完成创建提交后，将其推送到 GitHub 上的远程仓库：
+
+```shell
+$ git push
+# Pushes your local commits to the remote repository
+```
+
+---
+
+**零知识证明（ZKP）**
+
+区块链本身的一个关键优势就是透明性，然而在许多情况下，一些合约处于商业或法律因素需要保障数据隐私。在区块链中采用 ZKP 技术，可以证明某条隐藏信息是有效且为证明者所拥有的。
+
+如果要用一个概念直观地解释零知识证明如何证明用户拥有数据，可以想象一个山洞只有一个入口，洞里面有两条路（路径A和路径B），这两条路由一扇门连接，要说出密码才能通过这扇门。Alice 希望向 Bob 证明她知道开门的密码，但不想将密码透露给 Bob。
+
+为了完成这个证明，Bob 需要站在山洞外，Alice 从其中一条路走进山洞，而 Bob 并不知道她选了哪条路。接着，Bob 指定 Alice 从其中一条路回到山洞入口（注：这是随机选择的）。如果 Alice 最初选择从路径 A 走到门口，但 Bob 让她从路径 B 回来，唯一的方法就是穿过那扇门，而穿过门必须知道密码。为了充分证明 Alice 真的知道门的密码，而不是运气好刚好选到了同一条路，这个过程可以反复重复好几次。
+
+这一步操作完成后，Bob 就可以非常确信 Alice 知道门的密码，与此同时 Alice 也不用向 Bob 透露密码是什么。
+
+zkSync：https://zksync.io/，通过 `zkRollup` 技术支持的以太坊二层网络扩展。
+
+Aleo：https://aleo.org/，第一条使用零知识证明技术的公链。
+
+---
+
 <!-- Content_END -->
