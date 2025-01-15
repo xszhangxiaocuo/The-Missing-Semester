@@ -231,4 +231,45 @@ What did I learn today: Vim Editors
 
 简要记录了一下Vim的操作命令，初见上手是真的痛苦。后续的自定义Vim就留着以后慢慢研究吧。(´。＿。｀)
 
+### 01.15
+
+Duration of study: 1h \
+What did I learn today: Data Wrangling
+
+How to figure out who's trying to log my server?
+```bash
+ssh myserver journalctl | grep sshd
+```
+This command using a pipe to stream a remote file through `grep` on our local host.
+
+We can do the filtering on the remote computer.
+```bash
+ssh myserver 'journalctl | grep sshd | grep "Disconnected from"' > ssh.log
+```
+
+And then, We further organize the data.
+```bash
+ssh myserver journalctl
+ | grep sshd
+ | grep "Disconnected from"
+ | sed -E 's/.*Disconnected from (invalid |authenticating )?user (.*) [^ ]+ port [0-9]+( \[preauth\])?$/\2/'
+ | sort | uniq -c
+ | sort -nk1,1 | tail -n10
+ | awk '{print $2}' | paste -sd,
+```
+
+**Regular expressions** \
+Google how to use Regular expressions when you need to use it. And Using [regex debugger](https://regex101.com/) to debug.
+
+**How to use `sed`** \
+[sed | tldr InBrowser.App](https://tldr.inbrowser.app/pages.zh/linux/sed)
+
+**How to use `sort`** \
+[sort | tldr InBrowser.App](https://tldr.inbrowser.app/pages.zh/common/sort)
+
+Using `paste` to combine lines(`-s`) by a given single-character delimiter(`-d`;`,` in this case).
+
+`awk`, a programming language which is really good at processing text streams. \
+But at the same time, `awk` is complex. Browsing [awk | tldr InBrowser.App](https://tldr.inbrowser.app/pages.zh/common/awk) to get more infomation.
+
 <!-- Content_END -->
