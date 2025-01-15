@@ -321,6 +321,82 @@ shell在执行一些命令时会出现响应慢的情况
 一些常用的命令可以使用别名来代替输入，感觉跟之前讲到的 脚本差不多，不同的是脚本声明一个函数，然后通过`source`命令加载，别名是通过`alias`命令定义的，而且应该一次只能定义一个长命令
 在默认情况下 shell 并不会保存别名。为了让别名持续生效，需要将配置放进shell的启动文件里，像是 .bashrc 或 .zshrc
 
-感觉这节主要还是以演示居多吧，所以就先写到这里。今天主要就是给wsl装了个可视化界面~~（虽然我觉得并不好看）~~总结就是摸了。
+感觉这节主要还是以演示居多吧，所以就先写到这里。今天主要就是给wsl装了个可视化界面  ~~（虽然我觉得并不好看）~~  总结就是摸了。
+
+### 01.15
+
+#### 学习时长：90分钟
+
+今天为了试一下ssh的使用，给家里不用的老电脑也安装了wsl（别问我为什么也安装wsl，问就是没那么多空间）
+
+安装了wsl后，在初次启动时并没有弹出设置用户的提示，而是直接以root权限进入了
+这里需要创建自己的用户名
+通过`adduser`命令设置，这时会让你输入密码，之后就一堆巴拉巴拉的没用的个人信息，我全跳过了
+然后使用`vim`命令编辑`/etc/sudoers`,在打开的配置文件中，找到root ALL=(ALL:ALL) ALL 在下面添加刚设的用户名加上ALL=(ALL:ALL)ALL 就可以
+还可以通过`cat /etc/passwd |grep 用户名` 来验证自己的配置是否被正确保存了
+
+接下来就是使用ssh命令了，使用`ssh ip地址`后弹出
+
+>ssh: connect to host 192.168.1.5 port 22: Connection refused
+
+这是由于wsl并没有内置`openssh-server`，就需要执行`sudo app-get install openssh-server`以安装
+
+安装之后我们再执行ssh命令，我们会惊奇的发现：
+
+>connect to host 192.168.1.5 port 22: Connection refused
+>
+>哈哈，还是不行
+>
+
+别急，因为ssh服务妹有启动，这时我们执行` /etc/init.d/ssh start`之后就可以了
+
+注意的是一定要`ssh 该系统上存在的用户名@ip地址 `才可以，为什么这么说呢，你猜是谁直接输ip地址最后输密码输到怀疑人生。
+
+哦对，还有个公钥登录的方法，简单来说就是使用`ssh-keygen`命令生成一个公钥，再用`ssh-copy-id 用户名@ip地址`发送到目标主机后。之后再用ssh登录就不用输入密码了。
+
+搞完这一套步骤，不出意外你就可以享受ssh带来的便利了。
+
+这里贴一点自己的操作
+
+```bash
+sakuraauro@DemoJustLuGuo:~$ ssh 192.168.1.5
+ssh: connect to host 192.168.1.5 port 22: Connection refused #这里是刚开始尝试
+sakuraauro@DemoJustLuGuo:~$ sudo apt-get install openssh-server
+（省略掉输出）
+sakuraauro@DemoJustLuGuo:~$ /etc/init.d/ssh start
+Starting ssh (via systemctl): ssh.serviceFailed to start ssh.service: Interactive authentication required.
+See system logs and 'systemctl status ssh.service' for details.
+ failed!    #这里的意思好像是执行失败了，我没懂，所以我接下来准备看一下ssh服务的状态
+sakuraauro@DemoJustLuGuo:~$ systemctl status ssh.service
+○ ssh.service - OpenBSD Secure Shell server
+     Loaded: loaded (/usr/lib/systemd/system/ssh.service; disabled; preset: enabled)
+     Active: inactive (dead)      #ssh服务被加载了，但是并不在活跃状态？我试试看能不能跑
+TriggeredBy: ● ssh.socket
+       Docs: man:sshd(8)
+             man:sshd_config(5)  
+```
+---
+```bash             
+sakuraauro@DemoJustLuGuo:~$ ssh 192.168.1.5
+The authenticity of host '192.168.1.5 (192.168.1.5)' can't be established.
+ED25519 key fingerprint is SHA256:(省略掉).
+sakuraauro@192.168.1.5's password:
+Permission denied, please try again.
+sakuraauro@192.168.1.5's password:
+Permission denied, please try again.
+sakuraauro@192.168.1.5's password:
+sakuraauro@192.168.1.5: Permission denied (publickey,password). #这里输了好几次密码但是没有成功，我有点自我怀疑了。
+```
+---
+```bash
+sakuraauro@DemoJustLuGuo:~$ ssh shimarin@192.168.1.5
+shimarin@192.168.1.5's password:
+Welcome to Ubuntu 24.04.1 LTS (GNU/Linux 4.4.0-19041-Microsoft x86_64)
+（下面是一些状态信息，直接省略掉）
+shimarin@WINPC-xxxxxxxx:~$     #前缀变成了另一台电脑的用户名及名字，ssh连接成功了，下面用logout断开连接
+shimarin@WINPC-906291016:~$ logout
+Connection to 192.168.1.5 closed.
+```
+
 
 <!-- Content_END -->
